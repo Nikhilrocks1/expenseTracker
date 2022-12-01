@@ -29,13 +29,13 @@
     </ul>
    </div>
   </div>
- <script>
-  
-   let header=document.getElementById("main-header");
-  header.style.borderBottom="solid black 5px";
-   let additem=document.getElementsByClassName("title");
-   additem[0].style.fontWeight='bold';
-   additem[0].style.color='green';
- </script>
+<script>
+    let item3= document.getElementsByClassName("list-group-item");
+    item3[2].style.backgroundColor="green";
+  var items=document.getElementsByClassName("list-group-item");
+  for(let i=0;i<items.length;i++){
+    items[i].style.fontWeight='bold';
+  }
+</script>
 </body>
 </html>
