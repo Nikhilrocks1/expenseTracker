@@ -26,16 +26,15 @@
       <li class="list-group-item">Item 2</li>
       <li class="list-group-item">Item 3</li>
       <li class="list-group-item">Item 4</li>
+      <li class="edit-change">Item 5</li>
     </ul>
    </div>
   </div>
 <script>
-    let item3= document.getElementsByClassName("list-group-item");
-    item3[2].style.backgroundColor="green";
-  var items=document.getElementsByClassName("list-group-item");
-  for(let i=0;i<items.length;i++){
-    items[i].style.fontWeight='bold';
-  }
+ let item=document.getElementsByClassName("edit-change");
+   item[0].style.fontWeight="bold";
+  let change=document.getElementsByTagName("li");
+  change[4].style.backgroundColor="yellow";
 </script>
 </body>
 </html>
