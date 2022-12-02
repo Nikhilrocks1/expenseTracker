@@ -14,7 +14,7 @@
     </div>
   </header>
   <div class="container">
-   <div id="main" class="card card-body">
+   <div id="main" class="card-body">
     <h2 class="title">Add Items</h2>
     <form class="form-inline mb-3">
       <input type="text" class="form-control mr-2">
@@ -27,22 +27,33 @@
       <li class="list-group-item">Item 3</li>
       <li class="list-group-item">Item 4</li>
     </ul>
+    <span></span>
    </div>
   </div>
-<script>
-  //QUERYSELECTOR
-  let seconditem =document.querySelector(".list-group-item:nth-child(2)");
-       seconditem.style.backgroundColor="green";
-       let thirditem =document.querySelector(".list-group-item:nth-child(3)");
-       thirditem.style.display="none";
-//QUERYSELECTORALL
-let itemsecond =document.querySelectorAll("li");
-       itemsecond[1].style.color="red";
+  <script>
+    
+    let itemList=document.querySelector("#items");
+    //parentelement
+    console.log(itemList.parentElement);
+    console.log(itemList.lastElementChild);
+    console.log(itemList.lastChild);
+    console.log(itemList.firstChild);
+    console.log(itemList.firstElementChild);
+    console.log(itemList.nextSibling);
+    console.log(itemList.nextElementSibling);
+    console.log(itemList.previousSibling);
+    console.log(itemList.previousElementSibling);
+    //createelement
+    let newDiv=document.createElement("div");
+    newDiv.id="id1";
+    newDiv.setAttribute('title','hello div');
+    let newDivText=document.createTextNode("HEllo");
+    newDiv.appendChild(newDivText);
+    console.log(newDiv);
 
-       let odd=document.querySelectorAll("li:nth-child(odd)");
-       for(let i=0;i<odd.length;i++){
-        odd[i].style.backgroundColor="green";
-       }
-</script>
+    let container=document.querySelector("header .container");
+    let h1=document.querySelector('header h1');
+    container.insertBefore(newDiv,h1);
+  </script>
 </body>
 </html>
