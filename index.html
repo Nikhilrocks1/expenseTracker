@@ -22,15 +22,15 @@
 
    function submitDetails(e){
     e.preventDefault();
-     let name=e.target.username.value;
-     let email=e.target.email.value;
-     let phone=e.target.phone.value;
-
-    localStorage.setItem('name',name);
-    localStorage.setItem('email',email);
-    localStorage.setItem('phonenumber',phone);
+    let myObj={
+     name: e.target.username.value,
+     email: e.target.email.value,
+     phone: e.target.phone.value
     }
-
+   let myObj_serialised=JSON.stringify(myObj);
+      localStorage.setItem("Obj",myObj_serialised);
+    }
+   
   </script>
 </body>
 </html>
