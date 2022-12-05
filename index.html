@@ -16,21 +16,44 @@
    <input name="phone" type="tel" required><br>
    <button type="submit">Submit</button>
   </form>
+  <ul id="listOfUsers"></ul>
   <script>
     let form=document.getElementById("form");
     form.addEventListener("submit",submitDetails);
-
+      
    function submitDetails(e){
     e.preventDefault();
-    let myObj={
-     name: e.target.username.value,
-     email: e.target.email.value,
-     phone: e.target.phone.value
+   let name= e.target.username.value;
+     let email= e.target.email.value;
+    let phone= e.target.phone.value;
+    let obj={
+     name,
+     email,
+     phone
     }
-   let myObj_serialised=JSON.stringify(myObj);
-      localStorage.setItem("Obj",myObj_serialised);
+      localStorage.setItem(obj.email,JSON.stringify(obj));
+     
+    // showNewUserOnScreen(obj);
     }
-   
+      window.addEventListener("DOMContentLoaded",() => {
+        const localStorageObj=localStorage;
+        const localStoragekeys=Object.keys(localStorageObj);
+     
+        for(var i=0;i<localStoragekeys,length;i++){
+          const key = localStoragekeys[i];
+          const userDetailsString=localStorageObj[key];
+        
+          const userDetailsObj=JSON.parse(userDetailsString);
+          
+          showNewUserOnScreen(userDetailsObj);
+        }
+      })
+
+       function showNewUserOnScreen(user){
+           const parentNode=document.getElementById('listOfUsers');
+           const childHTML=`<li id=${user.email}>${user.name} ${user.email}</li>`;
+           parentNode.innerHTML=parentNode.innerHTML+childHTML;
+       }
   </script>
 </body>
 </html>
