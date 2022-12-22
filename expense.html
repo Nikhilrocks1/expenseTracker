@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense tracker</title>
+</head>
+<body>
+    <form id="form">
+        <label for="expenseamt">Expenseamount:</label>
+       <input id="expenseamt" type="number" required><br>
+       <label for="description">Description:</label>
+       <input id="description" type="text"><br>
+       <label for="category">choose category:</label>
+         <select id="category">
+            <option value="movie">movie</option>
+            <option value="shopping">shopping</option>
+            <option value="coldrink">coldrink</option>
+            <option value="party">party</option>
+            <option value="travelling">travelling</option>
+         </select><br>
+       <button type="submit">Add Expense</button>
+      </form>
+      <ul id="listofExpenses"></ul>
+</body>
+<script>
+    let form=document.getElementById("form");
+    form.addEventListener("submit",submitDetails);
+
+    function submitDetails(e){
+    e.preventDefault();
+   let expense= e.target.expenseamt.value;
+let description=e.target.description.value;
+    let category=e.target.category.value;
+    let obj={
+     expense,
+     description,
+     category
+    }
+     // localStorage.setItem(obj.category,JSON.stringify(obj));
+     
+      showNewUserOnScreen(obj);
+    }
+    function showNewUserOnScreen(user){
+           const parentNode=document.getElementById('listofExpenses');
+           const childHTML=`<li id=${user.category}>${user.expense}-${user.description} -${user.category}
+            <button onclick=deleteUser('${user.category}')>delete</button>
+            <button onclick=editUser('${user.expense}','${user.description}','${user.category}')>edit</button> </li>`;
+           parentNode.innerHTML=parentNode.innerHTML+childHTML;
+       }
+
+       function deleteUser(category){
+       // localStorage.removeItem(category);
+        removeItemFromScreen(category);
+       }
+      
+       function editUser(expense,description,category){
+        
+       document.getElementById("expenseamt").value=expense;
+       document.getElementById("description").value=description;
+       document.getElementById("category").value=category;
+       deleteUser(category);
+       
+     }
+     function removeItemFromScreen(category){
+       const parentNode=document.getElementById('listofExpenses');
+       const childNodeToBeDeleted=document.getElementById(category);
+         parentNode.removeChild(childNodeToBeDeleted);
+       }
+</script>
+</html>
