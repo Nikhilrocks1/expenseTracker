@@ -33,7 +33,7 @@ Posts=[
              }, 2000);
         })
      }
-    */
+    
     function deletePost(){
         return new Promise((resolve,reject)=>{
            setTimeout(() => {
@@ -48,7 +48,7 @@ Posts=[
         })
      }
 
-  /*  createPost({title:'Post three', body:'this is post three'})
+   createPost({title:'Post three', body:'this is post three'})
     .then(()=>{
         getPosts();
         deletePost().then(()=>{
@@ -73,7 +73,7 @@ Posts=[
             })
         })
     })
-    .catch(err=>console.log(err)); */
+    .catch(err=>console.log(err)); 
   
 Posts=[];
 
@@ -109,4 +109,109 @@ Posts=[];
           console.log(values);
         })
     }
-  );
+  );  
+
+  //async/await code
+ console.log('person1 shows ticket');
+  console.log('person2 shows ticket');
+
+  const preMovie=async ()=>{
+         
+  const wifeBringingTicks=new Promise((resolve,reject)=>{
+    setTimeout(() => {
+        resolve('ticket');
+    }, 2000);
+  })
+  
+const getPopcorn=new Promise((resolve,reject)=>{
+    setTimeout(() => {
+        resolve('popcorn');
+    }, 2000);
+})
+
+const getButter=new Promise((resolve,reject)=>{
+    setTimeout(() => {
+        resolve('butter');
+    }, 2000);
+})
+
+const getColdDrinks=new Promise((resolve,reject)=>{
+    setTimeout(() => {
+        resolve('cold drinks');
+    }, 2000);
+})
+
+const ticket=await wifeBringingTicks;
+    console.log('wife:i have the ${ticket}');
+    console.log('hubby:lets go in');
+    console.log('wife:i am hungry');
+
+const popcorn=await getPopcorn;
+    console.log(`hubby:here is the ${popcorn}`);
+    console.log('wife:i need some butter on my popcorn');
+
+const butter=await getButter;
+console.log(`husband:here is the ${butter}`);
+console.log('wife:i need coldrink');
+
+const coldDrink=await getColdDrinks;
+console.log(`hubby:here is the ${coldDrink}`);
+console.log('wife:lets go we are going late'); 
+const ticket=await wifeBringingTicks;
+let [popcorn,butter,coldDrink]=await Promise.all([getPopcorn,getButter,getColdDrinks]);
+console.log(`${popcorn},${butter},${coldDrink}`);
+return ticket;
+   }
+  
+  console.log('person4 shows ticket');
+  console.log('person5 shows ticket');
+
+  preMovie().then((m)=>{
+    console.log(`person3 shows ${m}`);
+  }) 
+
+*/
+Posts=[];
+
+    const user={
+        username:'Nikhil',
+        lastActivityTime:new Date()
+    }
+    const user1={
+        username:'Neeraj',
+        lastActivityTime:new Date()
+    }
+    function createPost(user){
+    return new Promise((resolve,reject)=>{
+      setTimeout(() => {
+        Posts.push(user);
+        resolve('post created');
+        reject();
+      }, 1000);
+    })
+}
+function deletePost(){
+    return new Promise((resolve,reject)=>{
+       setTimeout(() => {
+        if(Posts.length>0){
+            Posts.pop();
+            resolve('post deleted');
+        }
+        else{
+            reject('error:posts is empty');
+        }
+       },1000);
+    })
+ }
+ async function userDetails(){
+const msg1=await createPost(user);
+console.log(msg1);
+const msg2=await createPost(user1);
+console.log(msg2);
+const msg3=await deletePost();
+console.log('post deleted');
+    return Posts;
+ }
+ userDetails().then((post)=>{
+    console.log(post);
+ })
