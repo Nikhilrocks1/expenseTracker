@@ -1,217 +1,219 @@
-/*
-Posts=[
-      {title:'Post one' , body:'this is post one',createdAt:new Date().getTime()},
-      {title:'Post two', body:'this is post two',createdAt:new Date().getTime()}
-     ]
-   
-     let intervalId;
-     function getPosts(){
-          clearInterval(intervalId);
-        intervalId= setTimeout(() => {
-            let output='';
-            Posts.forEach(post => {
-                output+=`<li>${post.title} -last seen ${post.createdAt} </li>`
-            });
-            
-            document.body.innerHTML=output;
-         }, 1000);
-     }
+axios.defaults.headers.common['X-Auth-Token'] =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
-     
+// GET REQUEST
+function getTodos() {
+  // axios({
+  //   method: 'get',
+  //   url: 'https://jsonplaceholder.typicode.com/todos',
+  //   params: {
+  //     _limit: 5
+  //   }
+  // })
+  //   .then(res => showOutput(res))
+  //   .catch(err => console.error(err));
 
-     const createPost=(post)=>{
-        return new Promise((resolve,reject)=>{
-            setTimeout(() => {
-                Posts.push({...post,createdAt:new Date().getTime()});
-            const error=false;
-            if(!error){
-                resolve();
-            }
-            else{
-               reject('Error:something went wrong');
-            }
-             }, 2000);
-        })
-     }
-    
-    function deletePost(){
-        return new Promise((resolve,reject)=>{
-           setTimeout(() => {
-            if(Posts.length>0){
-                Posts.pop();
-                resolve(Posts);
-            }
-            else{
-                reject('error:posts is empty');
-            }
-           },1000);
-        })
-     }
-
-   createPost({title:'Post three', body:'this is post three'})
-    .then(()=>{
-        getPosts();
-        deletePost().then(()=>{
-            getPosts();
-            deletePost().then(()=>{
-                    getPosts();
-                    deletePost().then(()=>{
-                        getPosts();
-                        deletePost().then(()=>{console.log('deleted')})
-                        .catch(()=>{
-                             createPost({title:'Post four',body:'this is post four'})
-                             .then(()=>{
-                                getPosts();
-                                deletePost().then(()=>{
-                                    getPosts();
-                                    deletePost().then(()=>{})
-                                    .catch((error)=>{console.log(error)});
-                                })
-                             })
-                        })
-                    })
-            })
-        })
+  axios
+    .get('https://jsonplaceholder.typicode.com/todos?_limit=5', {
+      timeout: 5000
     })
-    .catch(err=>console.log(err)); 
-  
-Posts=[];
-
-    const user={
-        username:'Nikhil',
-        lastActivityTime:new Date()
-    }
-    const user1={
-        username:'Neeraj',
-        lastActivityTime:new Date()
-    }
-
-    const createPost=(user)=>{
-        return new Promise((resolve,reject)=>{
-          setTimeout(() => {
-            resolve(Posts.push(user));
-            reject();
-          }, 1000);
-        })
-    }
-
-    const updateLastUserActivityTime=(user)=>{
-        return new Promise((resolve,reject)=>{
-            setTimeout(() => {
-             user.lastActivityTime=new Date();
-            resolve(user.lastActivityTime);
-            }, 1000);
-        })
-    }
-
-    Promise.all([createPost(user),createPost(user1),updateLastUserActivityTime(user),updateLastUserActivityTime(user1)]).then((values)=>{
-        deletePost().then((values)=>{
-          console.log(values);
-        })
-    }
-  );  
-
-  //async/await code
- console.log('person1 shows ticket');
-  console.log('person2 shows ticket');
-
-  const preMovie=async ()=>{
-         
-  const wifeBringingTicks=new Promise((resolve,reject)=>{
-    setTimeout(() => {
-        resolve('ticket');
-    }, 2000);
-  })
-  
-const getPopcorn=new Promise((resolve,reject)=>{
-    setTimeout(() => {
-        resolve('popcorn');
-    }, 2000);
-})
-
-const getButter=new Promise((resolve,reject)=>{
-    setTimeout(() => {
-        resolve('butter');
-    }, 2000);
-})
-
-const getColdDrinks=new Promise((resolve,reject)=>{
-    setTimeout(() => {
-        resolve('cold drinks');
-    }, 2000);
-})
-
-const ticket=await wifeBringingTicks;
-    console.log('wife:i have the ${ticket}');
-    console.log('hubby:lets go in');
-    console.log('wife:i am hungry');
-
-const popcorn=await getPopcorn;
-    console.log(`hubby:here is the ${popcorn}`);
-    console.log('wife:i need some butter on my popcorn');
-
-const butter=await getButter;
-console.log(`husband:here is the ${butter}`);
-console.log('wife:i need coldrink');
-
-const coldDrink=await getColdDrinks;
-console.log(`hubby:here is the ${coldDrink}`);
-console.log('wife:lets go we are going late'); 
-const ticket=await wifeBringingTicks;
-let [popcorn,butter,coldDrink]=await Promise.all([getPopcorn,getButter,getColdDrinks]);
-console.log(`${popcorn},${butter},${coldDrink}`);
-return ticket;
-   }
-  
-  console.log('person4 shows ticket');
-  console.log('person5 shows ticket');
-
-  preMovie().then((m)=>{
-    console.log(`person3 shows ${m}`);
-  }) 
-
-*/
-Posts=[];
-
-    const user={
-        username:'Nikhil',
-        lastActivityTime:new Date()
-    }
-    const user1={
-        username:'Neeraj',
-        lastActivityTime:new Date()
-    }
-    function createPost(user){
-    return new Promise((resolve,reject)=>{
-      setTimeout(() => {
-        Posts.push(user);
-        resolve('post created');
-        reject();
-      }, 1000);
-    })
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
 }
-function deletePost(){
-    return new Promise((resolve,reject)=>{
-       setTimeout(() => {
-        if(Posts.length>0){
-            Posts.pop();
-            resolve('post deleted');
-        }
-        else{
-            reject('error:posts is empty');
-        }
-       },1000);
+
+// POST REQUEST
+function addTodo() {
+  axios
+    .post('https://jsonplaceholder.typicode.com/todos', {
+      title: 'New Todo',
+      completed: false
     })
- }
- async function userDetails(){
-const msg1=await createPost(user);
-console.log(msg1);
-const msg2=await createPost(user1);
-console.log(msg2);
-const msg3=await deletePost();
-console.log('post deleted');
-    return Posts;
- }
- userDetails().then((post)=>{
-    console.log(post);
- })
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
+}
+
+// PUT/PATCH REQUEST
+function updateTodo() {
+  axios
+    .patch('https://jsonplaceholder.typicode.com/todos/1', {
+      title: 'Updated Todo',
+      completed: true
+    })
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
+}
+
+// DELETE REQUEST
+function removeTodo() {
+  axios
+    .delete('https://jsonplaceholder.typicode.com/todos/1')
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
+}
+
+// SIMULTANEOUS DATA
+function getData() {
+  axios
+    .all([
+      axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5'),
+      axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5')
+    ])
+    .then(axios.spread((todos, posts) => showOutput(posts)))
+    .catch(err => console.error(err));
+}
+
+// CUSTOM HEADERS
+function customHeaders() {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'sometoken'
+    }
+  };
+
+  axios
+    .post(
+      'https://jsonplaceholder.typicode.com/todos',
+      {
+        title: 'New Todo',
+        completed: false
+      },
+      config
+    )
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
+}
+
+// TRANSFORMING REQUESTS & RESPONSES
+function transformResponse() {
+  const options = {
+    method: 'post',
+    url: 'https://jsonplaceholder.typicode.com/todos',
+    data: {
+      title: 'Hello World'
+    },
+    transformResponse: axios.defaults.transformResponse.concat(data => {
+      data.title = data.title.toUpperCase();
+      return data;
+    })
+  };
+
+  axios(options).then(res => showOutput(res));
+}
+
+// ERROR HANDLING
+function errorHandling() {
+  axios
+    .get('https://jsonplaceholder.typicode.com/todoss', {
+      // validateStatus: function(status) {
+      //   return status < 500; // Reject only if status is greater or equal to 500
+      // }
+    })
+    .then(res => showOutput(res))
+    .catch(err => {
+      if (err.response) {
+        // Server responded with a status other than 200 range
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+
+        if (err.response.status === 404) {
+          alert('Error: Page Not Found');
+        }
+      } else if (err.request) {
+        // Request was made but no response
+        console.error(err.request);
+      } else {
+        console.error(err.message);
+      }
+    });
+}
+
+// CANCEL TOKEN
+function cancelToken() {
+  const source = axios.CancelToken.source();
+
+  axios
+    .get('https://jsonplaceholder.typicode.com/todos', {
+      cancelToken: source.token
+    })
+    .then(res => showOutput(res))
+    .catch(thrown => {
+      if (axios.isCancel(thrown)) {
+        console.log('Request canceled', thrown.message);
+      }
+    });
+
+  if (true) {
+    source.cancel('Request canceled!');
+  }
+}
+
+// INTERCEPTING REQUESTS & RESPONSES
+axios.interceptors.request.use(
+  config => {
+    console.log(
+      `${config.method.toUpperCase()} request sent to ${
+        config.url
+      } at ${new Date().getTime()}`
+    );
+
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+// AXIOS INSTANCE
+const axiosInstance = axios.create({
+  // Other custom settings
+  baseURL: 'https://jsonplaceholder.typicode.com'
+});
+// axiosInstance.get('/comments').then(res => showOutput(res));
+
+// Show output in browser
+function showOutput(res) {
+  document.getElementById('res').innerHTML = `
+  <div class="card card-body mb-4">
+    <h5>Status: ${res.status}</h5>
+  </div>
+  <div class="card mt-3">
+    <div class="card-header">
+      Headers
+    </div>
+    <div class="card-body">
+      <pre>${JSON.stringify(res.headers, null, 2)}</pre>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-header">
+      Data
+    </div>
+    <div class="card-body">
+      <pre>${JSON.stringify(res.data, null, 2)}</pre>
+    </div>
+  </div>
+  <div class="card mt-3">
+    <div class="card-header">
+      Config
+    </div>
+    <div class="card-body">
+      <pre>${JSON.stringify(res.config, null, 2)}</pre>
+    </div>
+  </div>
+`;
+}
+
+// Event listeners
+document.getElementById('get').addEventListener('click', getTodos);
+document.getElementById('post').addEventListener('click', addTodo);
+document.getElementById('update').addEventListener('click', updateTodo);
+document.getElementById('delete').addEventListener('click', removeTodo);
+document.getElementById('sim').addEventListener('click', getData);
+document.getElementById('headers').addEventListener('click', customHeaders);
+document
+  .getElementById('transform')
+  .addEventListener('click', transformResponse);
+document.getElementById('error').addEventListener('click', errorHandling);
+document.getElementById('cancel').addEventListener('click', cancelToken);
