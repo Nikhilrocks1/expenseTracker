@@ -44,6 +44,18 @@
         console.log(error);
       })
     }
+    
+     window.addEventListener("DOMContentLoaded",()=>{
+           axios.get("https://crudcrud.com/api/808a3e33b8fe4fada7a00739a0b80a60/appointmentData")
+           .then((response)=>{
+            for(var i=0;i<response.data.length;i++){
+              showNewUserOnScreen(response.data[i]);
+            }
+           })
+           .catch((error)=>{
+            console.log(error);
+           })
+     })
 
     function showNewUserOnScreen(user){
            const parentNode=document.getElementById('listOfUsers');
