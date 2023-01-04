@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bill order</title>
+</head>
+<body>
+    <form id="form">
+        <label for="choosePrice">choosePrice:</label>
+       <input id="choosePrice" type="number" required><br>
+       <label for="chooseDish">chooseDish:</label>
+       <input id="chooseDish" type="text"><br>
+       <label for="chooseTable">choose table:</label>
+         <select id="chooseTable">
+            <option value="table1">table1</option>
+            <option value="table2">table2</option>
+            <option value="table3">table3</option>
+         </select><br>
+       <button type="submit">submit</button>
+      </form>
+     
+      <h1>Orders</h1>
+      <h2 id="tb1">Table1</h2>
+      <ul id="table1"></ul>
+      <h2 id="tb2">Table2</h2>
+      <ul id="table2"></ul>
+      <h2 id="tb3">Table3</h2>
+      <ul id="table3"></ul>
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+      <script>
+        let form=document.getElementById("form");
+    form.addEventListener("submit",submitDetails);
+
+    function submitDetails(e){
+    e.preventDefault();
+   let price= e.target.choosePrice.value;
+let dish=e.target.chooseDish.value;
+    let table=e.target.chooseTable.value;
+    let obj={
+     price,
+     dish,
+     table
+    }
+     // localStorage.setItem(obj.category,JSON.stringify(obj));
+     axios.post("https://crudcrud.com/api/4c7d8b272059440c990e2ad27fd4c861/bookingOrder",obj)
+     .then((response)=>{
+        showNewUserOnScreen(response.data);
+       // console.log(response);
+       })
+      .catch(()=>{
+        console.log(error);
+      })
+    }
+
+    function showNewUserOnScreen(user){
+           const parentNode=document.getElementById(`${user.table}`);
+           const childHTML=`<li id=${user._id}>${user.price}-${user.dish} -${user.table}
+            <button onclick=deleteUser('${user._id}','${user.table}')>delete</button> </li>`;
+           parentNode.innerHTML=parentNode.innerHTML+childHTML;
+       }
+       
+       function deleteUser(userId,userTable){
+        // localStorage.removeItem(email);
+        axios.delete(`https://crudcrud.com/api/4c7d8b272059440c990e2ad27fd4c861/bookingOrder/${userId}`)
+        .then((response)=>{
+          removeItemFromScreen(userId,userTable);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+       };
+
+       function removeItemFromScreen(userId,userTable){
+       const parentNode=document.getElementsById(userTable);
+       const childNodeToBeDeleted=document.getElementById(userId);
+         parentNode.removeChild(childNodeToBeDeleted);
+       }
+      </script>
+</body>
+</html>
