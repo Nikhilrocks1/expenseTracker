@@ -74,7 +74,7 @@ let dish=e.target.chooseDish.value;
        };
 
        function removeItemFromScreen(userId,userTable){
-       const parentNode=document.getElementsById(userTable);
+       const parentNode=document.getElementById(userTable);
        const childNodeToBeDeleted=document.getElementById(userId);
          parentNode.removeChild(childNodeToBeDeleted);
        }
