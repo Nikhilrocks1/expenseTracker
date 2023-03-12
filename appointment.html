@@ -24,7 +24,7 @@
          let form=document.getElementById("form");
     form.addEventListener("submit",submitDetails);
 
-           function submitDetails(e){
+         async function submitDetails(e){
          e.preventDefault();
         let name= e.target.username.value;
         let email= e.target.email.value;
@@ -35,16 +35,17 @@
         phone
        }
      // localStorage.setItem(obj.email,JSON.stringify(obj));
-       axios.post("https://crudcrud.com/api/d8f0e26b75da417cb6cd2ed4377420be/appointmentData",obj)
+     try{
+      await axios.post("https://crudcrud.com/api/d8f0e26b75da417cb6cd2ed4377420be/appointmentData",obj)
        .then((response)=>{
         showNewUserOnScreen(response.data);
        // console.log(response);
        })
-      .catch(()=>{
-        console.log(error);
-      })
     }
-    
+    catch{
+        console.log(error);
+    }
+  }  
      window.addEventListener("DOMContentLoaded",()=>{
            axios.get("https://crudcrud.com/api/d8f0e26b75da417cb6cd2ed4377420be/appointmentData")
            .then((response)=>{
@@ -65,15 +66,16 @@
            parentNode.innerHTML=parentNode.innerHTML+childHTML;
        }
 
-       function deleteUser(userId){
-        // localStorage.removeItem(email);
-        axios.delete(`https://crudcrud.com/api/d8f0e26b75da417cb6cd2ed4377420be/appointmentData/${userId}`)
+       async function deleteUser(userId){
+       try{ // localStorage.removeItem(email);
+       await axios.delete(`https://crudcrud.com/api/d8f0e26b75da417cb6cd2ed4377420be/appointmentData/${userId}`)
         .then((response)=>{
           removeItemFromScreen(userId);
         })
-        .catch((error)=>{
-          console.log(error);
-        })
+       }
+       catch{
+        console.log(error);
+       }
        };
 
        function removeItemFromScreen(userId){
