@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense tracker</title>
+</head>
+<body>
+    <form id="form">
+        <label for="expenseamt">Expenseamount:</label>
+       <input id="expenseamt" type="number" required><br>
+       <label for="description">Description:</label>
+       <input id="description" type="text"><br>
+       <label for="category">choose category:</label>
+         <select id="category">
+            <option value="movie">movie</option>
+            <option value="shopping">shopping</option>
+            <option value="coldrink">coldrink</option>
+            <option value="party">party</option>
+            <option value="travelling">travelling</option>
+         </select><br>
+       <button type="submit">Add Expense</button>
+      </form>
+      <ul id="listofExpenses"></ul>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script>
+    let form=document.getElementById("form");
+    form.addEventListener("submit",submitDetails);
+
+    async function submitDetails(e){
+    e.preventDefault();
+   let expenseamt= e.target.expenseamt.value;
+let description=e.target.description.value;
+    let category=e.target.category.value;
+    let obj={
+     expenseamt,
+     description,
+     category
+    }
+     // localStorage.setItem(obj.category,JSON.stringify(obj));
+    await axios.post('http://localhost:3000/user/add-expense',obj)
+     .then((response)=>{
+      console.log(response);
+                showNewUserOnScreen(response.data.newExpense)
+            })
+            .catch((err)=>{
+                document.body.innerHTML=document.body.innerHTML+"<h4>Something went worng"
+                console.log(err)
+            })
+      
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+         axios.get('http://localhost:3000/user/get-expenses')
+         .then((response)=>{
+             console.log(response)
+            for(var i=0;i<response.data.length;i++){
+                showNewUserOnScreen(response.data.allExpenses[i]);
+            }
+         })
+         .catch((err)=>{
+            console.log(err)
+         })
+        })
+
+    function showNewUserOnScreen(user){
+           const parentNode=document.getElementById('listofExpenses');
+           const childHTML=`<li id=${user.id}>${user.expenseamt}-${user.description} -${user.category}
+            <button onclick=deleteUser('${user.id}')>delete</button>
+            <button onclick=editUser('${user.expenseamt}','${user.description}','${user.category}','${user.id}')>edit</button> </li>`;
+           parentNode.innerHTML=parentNode.innerHTML+childHTML;
+       }
+
+       async function deleteUser(userId){
+            //userId = undefined
+          await  axios.delete(`http://localhost:3000/user/delete-expense/${userId}`)
+            .then((response)=>{
+                removeUserFromScreen(userId);
+            })
+            .catch(err=>console.log(err))
+            
+        }
+      
+       function editUser(expenseamt,description,category,userId){
+        
+       document.getElementById("expenseamt").value=expenseamt;
+       document.getElementById("description").value=description;
+       document.getElementById("category").value=category;
+       deleteUser(userId);
+       
+     }
+     function removeUserFromScreen(userId){
+       const parentNode=document.getElementById('listofExpenses');
+       const childNodeToBeDeleted=document.getElementById(userId);
+         parentNode.removeChild(childNodeToBeDeleted);
+       }
+</script>
+</body>
+</html>
