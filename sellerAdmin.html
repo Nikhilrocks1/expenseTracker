@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerAdmin Page</title>
+</head>
+<body>
+    <form id="form">
+        <label for="choosePrice">choosePrice:</label>
+       <input id="choosePrice" type="number" required><br>
+       <label for="description">description:</label>
+       <input id="description" type="text"><br>
+       <label for="chooseProduct">choose Product:</label>
+         <select id="chooseProduct">
+            <option value="product1">electronic</option>
+            <option value="product2">food</option>
+            <option value="product3">shop</option>
+         </select><br>
+       <button type="submit">submit</button>
+      </form>
+     
+      <h1>Orders</h1>
+    <ul id="listofProducts">
+      <h2 id="pd1">electronic</h2>
+      <ul id="product1"></ul>
+      <h2 id="pd2">food</h2>
+      <ul id="product2"></ul>
+      <h2 id="pd3">shop</h2>
+      <ul id="product3"></ul>
+    </ul>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+      <script>
+        let form=document.getElementById("form");
+    form.addEventListener("submit",submitDetails);
+
+    async function submitDetails(e){
+    e.preventDefault();
+   let price= e.target.choosePrice.value;
+let description=e.target.description.value;
+    let product=e.target.chooseProduct.value;
+    let obj={
+     price,
+     description,
+     product
+    }
+     
+    
+      await axios.post('http://localhost:3000/user/add-product',obj)
+     .then((response)=>{
+      console.log(response);
+                showNewUserOnScreen(response.data.newProduct)
+            })
+            .catch((err)=>{
+                document.body.innerHTML=document.body.innerHTML+"<h4>Something went worng"
+                console.log(err);
+            })
+
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+         axios.get('http://localhost:3000/user/get-products')
+         .then((response)=>{
+            for(var i=0;i<response.data.length;i++){
+                showNewUserOnScreen(response.data.allProducts[i]);
+            }
+         })
+         .catch((err)=>{
+            console.log(err)
+         })
+        })
+
+    function showNewUserOnScreen(user){
+           const parentNode=document.getElementById(`${user.product}`);
+           const childHTML=`<li id=${user.id}>${user.price}-${user.description} -${user.product}
+            <button onclick=deleteUser('${user.id},')>delete</button> </li>`;
+           parentNode.innerHTML=parentNode.innerHTML+childHTML;
+       }
+       
+      async function deleteUser(userId){
+        // localStorage.removeItem(email);
+        await axios.delete(`http://localhost:3000/user/delete-product/${userId}`)
+            .then((response)=>{
+                removeUserFromScreen(userId);
+            })
+            .catch(err=>console.log(err))
+        
+       };
+
+       function removeUserFromScreen(userId){
+       const parentNode=document.getElementById("listofProducts");
+       const childNodeToBeDeleted=document.getElementById(userId);
+         parentNode.removeChild(childNodeToBeDeleted);
+       }
+      </script>
+</body>
+</html>
