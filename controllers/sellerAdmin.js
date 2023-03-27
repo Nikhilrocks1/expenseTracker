@@ -20,7 +20,7 @@ exports.addProduct = async (req, res, next)=> {
 
 }
 
-exports.getProducts = async (req, res, next) => {
+exports.getProduct = async (req, res, next) => {
     try{
      const products = await SellerAdmin.findAll();
      res.status(200).json({allProducts: products})

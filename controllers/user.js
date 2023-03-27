@@ -1,49 +1,25 @@
 const User = require('../models/user');
 
-exports.addUser = async (req, res, next)=> {
-
-    try{
-       console.log(req.body);
-       if(!req.body.phone){
-          throw new Error('Phone number is mandatory');
-       }
-    const name = req.body.name;
-    const email = req.body.email;
-    const phonenumber = req.body.phone;
-
-    const data = await User.create( {username: name, email: email, phonenumber: phonenumber})
-    res.status(201).json({newUserDetails: data});
-    } catch(err){
-      console.log(err);
-       res.status(500).json({
-          error: err
-       })
-      
+function isstringinvalid(string){
+    if(string == undefined || string.length === 0){
+        return true
     }
-
-}
-
-exports.getUser = async (req, res, next) => {
-    try{
-     const users = await User.findAll();
-     res.status(200).json({allUsers: users})
-    } catch(error){
-     console.log('Get user is failing', JSON.stringify(error));
-     res.status(500).json({error: err})
+    else{
+        return false
     }
 }
 
-exports.deleteUser = async (req, res) => {
-    const uId = req.params.id;
+exports.postSignup = async(req, res, next) => {
     try{
-    if(req.params.id == 'undefined'){
-       console.log('ID is missing');
-      return res.status(400).json({err: 'ID is missing'})
-    }
-    await User.destroy({where: {id: uId}});
-    res.sendStatus(200);
-    } catch(err){
-       console.log(err);
-       res.status(500).json(err)
+        const {name, email, password} = req.body;
+        if (isstringinvalid(name) || isstringinvalid(email) || isstringinvalid(password)){
+            return res.status(400).json({err: "something is missing!!"})
+        }
+
+           await User.create({name, email, password})
+           res.status(200).json({message:'successfully create new user'});
+           
+    }catch(err) {
+        res.status(500).json(err);
     }
 }
