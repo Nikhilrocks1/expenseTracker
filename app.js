@@ -2,11 +2,11 @@ const path = require('path');
 var cors=require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
+const app = express();
 
 app.use(cors());
 const errorController = require('./controllers/error');
 const sequelize = require('./util/database');
-const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
