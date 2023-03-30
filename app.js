@@ -2,6 +2,7 @@ const path = require('path');
 var cors=require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt=require('bcrypt');
 const app = express();
 
 app.use(cors());
@@ -15,7 +16,6 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const userRoutes=require('./routes/user');
 const expenseRoutes=require('./routes/expense');
-
 
 
 app.use(bodyParser.json({ extended: false }));
